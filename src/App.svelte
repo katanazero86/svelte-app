@@ -1,4 +1,14 @@
 <script>
+
+	import {FIREBASE_DB} from './firebase';
+
+	let list = [];
+	FIREBASE_DB.collection("list")
+			.orderBy("age", "asc").onSnapshot(snapData => {
+				list = snapData.docs;
+	});
+
+
 	export let name;
 </script>
 
@@ -8,6 +18,17 @@
 </main>
 <div class="bg-blue-100">
 	tailwindcss
+</div>
+
+<!-- https://www.youtube.com/watch?v=L39XLne7EU8 -->
+
+<div class="bg-gray-200">
+	{#each list as listItem}
+		<div>
+			<p>{listItem.data().name}</p>
+			<p>{listItem.data().age}</p>
+		</div>
+	{/each}
 </div>
 
 <style>
