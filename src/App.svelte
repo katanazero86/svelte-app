@@ -3,6 +3,7 @@
     import {FIREBASE_DB} from './firebase';
     import moment from 'moment';
     import 'moment-timezone';
+    import CardComponent from "./components/card/CardComponent.svelte";
 
     moment.tz.setDefault("Asia/Seoul");
 
@@ -45,11 +46,11 @@
     // update
     const updateListItem = (itemId) => {
         FIREBASE_DB.collection('list')
-        .doc(itemId)
-        .update({
-            name : '수정',
-            age : 50
-        })
+                .doc(itemId)
+                .update({
+                    name: '수정',
+                    age: 50
+                })
     }
 
     const checkEmoji = (e) => {
@@ -122,6 +123,8 @@
         </div>
     {/each}
 </div>
+
+<CardComponent/>
 
 <style>
     main {
