@@ -7,7 +7,6 @@
 
     moment.tz.setDefault("Asia/Seoul");
 
-    export let name;
 
     let list = [];
     FIREBASE_DB.collection("list")
@@ -73,15 +72,23 @@
 
 </script>
 
-<main>
-    <h1>Hello {name}!</h1>
-    <p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
-<div class="bg-blue-100">
-    tailwindcss
-</div>
+<main class="w-full bg-indigo-100">
 
-<!-- https://www.youtube.com/watch?v=L39XLne7EU8 -->
+    <section class="p-3">
+        <h1 class="text-5xl text-indigo-800">TODO List</h1>
+        <p class="text-2xl text-gray-700">
+            TODAY { moment(new Date()).tz('Asia/Seoul').format('YYYY.MM.DD') }
+        </p>
+        <p class="text-xl text-red-600">
+            There are <span class="underline">12</span> tasks
+        </p>
+    </section>
+
+    <section class="p-3">
+
+    </section>
+
+</main>
 
 <div class="w-full max-w-xs p-1">
     <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
@@ -102,9 +109,6 @@
     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" on:click={createListItem}>
         추가
     </button>
-    <!--	<button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" on:click={deleteListItem}>-->
-    <!--		삭제-->
-    <!--	</button>-->
 </div>
 
 <div class="bg-gray-200">
@@ -127,23 +131,6 @@
 <CardComponent/>
 
 <style>
-    main {
-        text-align: center;
-        padding: 1em;
-        max-width: 240px;
-        margin: 0 auto;
-    }
 
-    h1 {
-        color: #ff3e00;
-        text-transform: uppercase;
-        font-size: 4em;
-        font-weight: 100;
-    }
 
-    @media (min-width: 640px) {
-        main {
-            max-width: none;
-        }
-    }
 </style>

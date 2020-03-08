@@ -2,6 +2,10 @@
     import ArrowDown from "../icons/ArrowDown.svelte";
     import ArrowUp from "../icons/ArrowUp.svelte";
 
+    import { fade } from 'svelte/transition';
+
+    let isShow = false;
+
 </script>
 
 <div class="max-w-sm rounded overflow-hidden shadow-lg">
@@ -9,15 +13,19 @@
     <div class="px-6 py-4">
         <div class="flex flex-row flex-no-wrap items-center justify-between">
             <div class="font-bold text-xl mb-2 whitespace-no-wrap truncate text-gray-800">TODO title</div>
-            <div style="cursor: pointer">
-                <ArrowDown/>
+            {#if isShow}
+                <ArrowUp on:click={() => isShow = false }/>
+            {:else}
+                <ArrowDown on:click={() => isShow = true }/>
+            {/if}
+        </div>
+        {#if isShow}
+            <div transition:fade="{{delay: 0, duration: 250}}">
+                <p class="text-gray-700 text-base">
+                    TODO contents..
+                </p>
             </div>
-        </div>
-        <div>
-            <p class="text-gray-700 text-base">
-                TODO contents..
-            </p>
-        </div>
+        {/if}
     </div>
     <div class="px-6 py-4">
         <span class="block font-medium text-blue-500 tracking-tighter text-base subpixel-antialiased">
