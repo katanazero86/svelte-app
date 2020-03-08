@@ -2,7 +2,7 @@
     import ArrowDown from "../icons/ArrowDown.svelte";
     import ArrowUp from "../icons/ArrowUp.svelte";
 
-    import { fade } from 'svelte/transition';
+    import {fade} from 'svelte/transition';
 
     let isShow = false;
 
@@ -33,16 +33,13 @@
         </span>
     </div>
     <div class="px-6 py-4">
-        <button class="bg-indigo-500 hover:bg-indigo-700 text-white text-sm font-bold p-1 rounded"
-        >
+        <button class="bg-indigo-500 hover:bg-indigo-700 text-white text-sm font-bold p-1 rounded">
             완료
         </button>
-        <button class="bg-blue-500 hover:bg-blue-700 text-white text-sm font-bold p-1 rounded"
-                >
+        <button class="bg-blue-500 hover:bg-blue-700 text-white text-sm font-bold p-1 rounded">
             수정
         </button>
-        <button class="bg-red-500 hover:bg-red-700 text-white text-sm font-bold p-1 rounded"
-                >
+        <button class="bg-red-500 hover:bg-red-700 text-white text-sm font-bold p-1 rounded">
             삭제
         </button>
     </div>

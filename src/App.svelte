@@ -83,15 +83,16 @@
             There are <span class="underline">12</span> tasks
         </p>
         <div class="flex items-center justify-end">
-            <button class="bg-indigo-600 hover:bg-indigo-800 text-white font-bold p-2 rounded shadow" on:click={createListItem}>
+            <button class="bg-indigo-600 hover:bg-indigo-800 text-white font-bold p-2 rounded shadow"
+                    on:click={createListItem}>
                 Add TODO
             </button>
         </div>
     </section>
 
-<!--    <section class="p-3">-->
+    <!--    <section class="p-3">-->
 
-<!--    </section>-->
+    <!--    </section>-->
 
 </main>
 
