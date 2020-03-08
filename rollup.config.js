@@ -3,6 +3,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
+import json from '@rollup/plugin-json';
 
 import postcss from 'rollup-plugin-postcss'; // rollup postcss plugin
 import postcssimport from 'postcss-import'; // postcss-import plugin : @import 구문을 사용할 수 있게해줌
@@ -27,12 +28,12 @@ export default {
 				postcssimport(),
 				tailwindcss(),
 				autoprefixer(),
-				purgecss({
-					content: ["**/*.html", "**/*.svelte"],
-					defaultExtractor: content => content.match(/[A-Za-z0-9-_:/]+/g) || [],
-					// fontFace: true,
-					// keyframes: true,
-				}),
+				// purgecss({
+				// 	content: ["**/*.html", "**/*.svelte"],
+				// 	defaultExtractor: content => content.match(/[A-Za-z0-9-_:/]+/g) || [],
+				// 	// fontFace: true,
+				// 	// keyframes: true,
+				// }),
 			],
 			// extract: true, // js 파일이 생성된 동일한 위치에 css 파일을 추출
 		}),
@@ -62,6 +63,10 @@ export default {
 			dedupe: ['svelte']
 		}),
 		commonjs(),
+
+		json({
+			compact: true
+		}),
 
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated
