@@ -33,8 +33,17 @@
         </span>
     </div>
     <div class="px-6 py-4">
-        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-600 mr-2">#photography</span>
-        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-600 mr-2">#travel</span>
-        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-600">#winter</span>
+        <button class="bg-indigo-500 hover:bg-indigo-700 text-white text-sm font-bold p-1 rounded"
+        >
+            완료
+        </button>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white text-sm font-bold p-1 rounded"
+                >
+            수정
+        </button>
+        <button class="bg-red-500 hover:bg-red-700 text-white text-sm font-bold p-1 rounded"
+                >
+            삭제
+        </button>
     </div>
 </div>
