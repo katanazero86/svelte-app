@@ -12,31 +12,62 @@
 
     let isShow = false;
 
+    // title : string, description : string, createdDate : string, dueDate : string, done : boolean
     let list = [];
+    let total = 0;
+    let doneCount = 0;
+    let overDueDateCount = 0;
+
     FIREBASE_DB.collection("list")
-            .orderBy("createdDate", "desc").onSnapshot(snapData => {
-        list = snapData.docs;
-    });
+            .orderBy("createdDate", "desc")
+            .onSnapshot(snapData => {
+                list = snapData.docs;
+                total = snapData.size;
+            });
+
+    FIREBASE_DB.collection("list")
+            .where("done", "==", true)
+            .onSnapshot(snapData => {
+                doneCount = snapData.size;
+            });
+
+    const saveTodo = (e) => {
+        const todoItemObject = {...e.detail};
+        createListItem(todoItemObject);
+    };
 
     let addName = '';
     let addAge = null;
 
     // create
-    const createListItem = () => {
+    const createListItem = (todoItemObject) => {
 
-        if (!addName.trim() || !addAge) {
-            alert('이름/나이를 입력 후, 다시 시도해 주세요!');
+        if (!todoItemObject.title.trim()) {
+            alert('제목을 입력해주세요..');
+            return false;
+        }
+
+        if (!todoItemObject.description.trim()) {
+            alert('내용을 입력해주세요..');
+            return false;
+        }
+
+        if (!todoItemObject.dueDate.trim()) {
+            alert('기한을 선택해주세요..');
             return false;
         }
 
         FIREBASE_DB.collection('list')
                 .add({
-                    name: addName.trim(),
-                    age: addAge,
+                    title: todoItemObject.title.trim(),
+                    description: todoItemObject.description.trim(),
+                    dueDate: todoItemObject.dueDate.trim(),
+                    done: false,
                     createdDate: moment(new Date()).tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss')
                 });
 
-        addName = addName.trim();
+        isShow = false;
+
     };
 
     // delete
@@ -88,43 +119,51 @@
         <p class="text-2xl text-gray-700">
             TODAY { moment(new Date()).tz('Asia/Seoul').format('YYYY.MM.DD') }
         </p>
-        <p class="text-xl text-red-600">
-            There are <span class="underline">12</span> tasks
+        <p class="text-lg text-red-600">
+            There are a total of <span class="underline">{total}</span> tasks
+        </p>
+        <p class="text-lg text-indigo-600">
+            There are <span class="underline">{doneCount}</span> tasks completed.
+        </p>
+        <p class="text-lg text-pink-600">
+            There are <span class="underline">10</span> tasks beyond the due date.
         </p>
         <div class="flex items-center justify-end">
             <button class="bg-indigo-600 hover:bg-indigo-800 text-white font-bold p-2 rounded shadow"
                     on:click={() => isShow = true }>
-                Add TODO
+                TODO 추가
             </button>
         </div>
     </section>
 
-    <!--    <section class="p-3">-->
-
-    <!--    </section>-->
+    <section class="p-3">
+        {#each list as listItem}
+            <CardComponent item={listItem.data()}/>
+        {/each}
+    </section>
 
 </main>
 
-<div class="w-full max-w-xs p-1">
-    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-            name
-        </label>
-        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-               type="text" placeholder="ryan" bind:value={addName} on:keyup={checkValidation.emojiValidation}>
-    </div>
-    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-            age
-        </label>
-        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-               type="text" placeholder="25" bind:value={addAge} on:keydown={checkValidation.numberValidation}>
-    </div>
+<!--<div class="w-full max-w-xs p-1">-->
+<!--    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">-->
+<!--        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">-->
+<!--            name-->
+<!--        </label>-->
+<!--        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"-->
+<!--               type="text" placeholder="ryan" bind:value={addName} on:keyup={checkValidation.emojiValidation}>-->
+<!--    </div>-->
+<!--    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">-->
+<!--        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">-->
+<!--            age-->
+<!--        </label>-->
+<!--        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"-->
+<!--               type="text" placeholder="25" bind:value={addAge} on:keydown={checkValidation.numberValidation}>-->
+<!--    </div>-->
 
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" on:click={createListItem}>
-        추가
-    </button>
-</div>
+<!--    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" on:click={createListItem}>-->
+<!--        추가-->
+<!--    </button>-->
+<!--</div>-->
 
 <div class="bg-gray-200">
     {#each list as listItem}
@@ -143,13 +182,14 @@
     {/each}
 </div>
 
-<CardComponent/>
-
 
 {#if isShow}
-<div transition:fade="{{delay: 0, duration: 250}}">
-    <TodoFormModalComponent on:cancel={() => isShow = false} />
-</div>
+    <div transition:fade="{{delay: 0, duration: 250}}">
+        <TodoFormModalComponent
+                on:save={saveTodo}
+                on:cancel={() => isShow = false}
+        />
+    </div>
 {/if}
 
 <style>
