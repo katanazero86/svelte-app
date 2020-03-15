@@ -1,5 +1,8 @@
 
+# svelte todo app
+
 ```
+https://velog.io/@katanazero86/svelte-todo-app
 demo : https://svelte-app-delta.now.sh/
 
 svelte 
@@ -12,6 +15,9 @@ moment
 moment-timezone
 
 ```
+- svelte 를 이용하여 todo app 을 만들어봤습니다.
+- 배포는 zeit now 를 이용하였습니다.
+- crud 구현을 위해, firebase(firestore)를 이용하였습니다.
 
 
 ---
