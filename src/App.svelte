@@ -131,7 +131,7 @@
                         });
             },
 
-            //update
+            //update : modify
             updateItem(e) {
                 const targetItemObject = e.detail;
                 FIREBASE_DB.collection('list')
