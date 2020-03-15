@@ -1,6 +1,15 @@
 
 ```
+demo : https://svelte-app-delta.now.sh/
 
+svelte 
+rollup
+postcss
+tailwindcss
+svelte-calendar
+firebase
+moment
+moment-timezone
 
 ```
 
