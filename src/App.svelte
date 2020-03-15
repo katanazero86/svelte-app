@@ -38,6 +38,12 @@
                 doneCount = snapData.size;
             });
 
+    FIREBASE_DB.collection('list')
+            .where("dueDate", "<", moment().tz('Asia/Seoul').format('YYYY-MM-DD'))
+            .onSnapshot(snapData => {
+                overDueDateCount = snapData.size;
+            });
+
     const saveTodo = (e) => {
         const todoItemObject = {...e.detail};
         firebaseAppModule.createItem(todoItemObject);
@@ -184,7 +190,7 @@
 
 </script>
 
-<main class="w-full h-full bg-indigo-100">
+<main class="w-full h-full overflow-auto bg-indigo-100">
 
     <section class="p-3">
         <h1 class="text-5xl text-indigo-800">TODO List</h1>
@@ -198,7 +204,7 @@
             There are <span class="underline">{doneCount}</span> tasks completed.
         </p>
         <p class="text-lg text-pink-600">
-            There are <span class="underline">10</span> tasks beyond the due date.
+            There are <span class="underline">{overDueDateCount}</span> tasks beyond the due date.
         </p>
         <div class="flex items-center justify-end">
             <button class="bg-indigo-600 hover:bg-indigo-800 text-white font-bold p-2 rounded shadow"
@@ -210,7 +216,7 @@
 
     <section class="flex flex-wrap justify-between p-3">
         {#each list as listItem}
-            <div class="w-full sm:flex-1 p-2">
+            <div class="p-2 sm:w-1/2 w-full">
                 <CardComponent item={listItem.data()}
                                id={listItem.id}
                                on:done={doneTodo}
