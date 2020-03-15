@@ -133,14 +133,14 @@
 
             //update
             updateItem(e) {
-                const targetItem = {...e.detail};
+                const targetItemObject = e.detail;
                 FIREBASE_DB.collection('list')
-                        .doc(targetItem.id)
+                        .doc(targetItemObject.id)
                         .update({
-                            title: targetItem.title,
-                            description: targetItem.description,
-                            dueDate: targetItem.dueDate,
-                            done: targetItem.done,
+                            title: targetItemObject.title,
+                            description: targetItemObject.description,
+                            dueDate: targetItemObject.dueDate,
+                            done: targetItemObject.done,
                         });
 
                 isShow = false;
