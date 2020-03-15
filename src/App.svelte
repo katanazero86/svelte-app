@@ -45,7 +45,7 @@
             });
 
     const saveTodo = (e) => {
-        const todoItemObject = {...e.detail};
+        const todoItemObject = e.detail;
         firebaseAppModule.createItem(todoItemObject);
     };
 

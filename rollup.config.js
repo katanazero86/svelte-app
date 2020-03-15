@@ -28,12 +28,12 @@ export default {
 				postcssimport(),
 				tailwindcss(),
 				autoprefixer(),
-				// purgecss({
-				// 	content: ["**/*.html", "**/*.svelte"],
-				// 	defaultExtractor: content => content.match(/[A-Za-z0-9-_:/]+/g) || [],
-				// 	// fontFace: true,
-				// 	// keyframes: true,
-				// }),
+				purgecss({
+					content: ["**/*.html", "**/*.svelte"],
+					defaultExtractor: content => content.match(/[A-Za-z0-9-_:/]+/g) || [],
+					// fontFace: true,
+					// keyframes: true,
+				}),
 			],
 			// extract: true, // js 파일이 생성된 동일한 위치에 css 파일을 추출
 		}),
