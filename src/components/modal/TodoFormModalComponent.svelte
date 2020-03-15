@@ -1,12 +1,12 @@
 <script>
 
+    import {createEventDispatcher, onMount} from 'svelte';
+
     import moment from 'moment';
     import 'moment-timezone';
 
     import Close from "../icons/Close.svelte";
     import Datepicker from 'svelte-calendar/src/Components/Datepicker.svelte';
-
-    import {createEventDispatcher} from 'svelte';
 
     const dispatchModule = (() => {
 
@@ -18,12 +18,24 @@
             },
 
             clickSave: () => {
-                dispatch('save', {
-                    title : title,
-                    description : description,
-                    dueDate : formattedSelected,
-                    done : done,
-                });
+
+                if(id) {
+                    dispatch('update', {
+                        id : id,
+                        title : title,
+                        description : description,
+                        dueDate : formattedSelected,
+                        done : done,
+                    });
+                } else {
+                    dispatch('save', {
+                        title : title,
+                        description : description,
+                        dueDate : formattedSelected,
+                        done : done,
+                    });
+                }
+
             },
         }
 
@@ -31,15 +43,22 @@
 
     const minDate = moment(new Date()).tz('Asia/Seoul').toDate();
 
+    export let id = null;
     export let title = '';
     export let description = '';
     export let dueDate = '';
     export let done = false;
 
-    let formattedSelected = dueDate || null;
+    let formattedSelected = null;
+
+    onMount(() => {
+        formattedSelected = dueDate || moment(new Date()).tz('Asia/Seoul').format('YYYY-MM-DD');
+    });
+
     const format = (date) => {
         return moment(date).tz('Asia/Seoul').format('YYYY-MM-DD');
     };
+
     const daysOfWeek = [
         ['일요일', '일'],
         ['월요일', '월'],
@@ -49,6 +68,7 @@
         ['금요일', '금'],
         ['토요일', '토']
     ];
+
     const monthsOfYear = [
         ['1월', 'Jan(1월)'],
         ['2월', 'Feb(2월)'],

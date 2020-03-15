@@ -1,17 +1,41 @@
 <script>
+
+    import {createEventDispatcher} from 'svelte';
+    import {fade} from 'svelte/transition';
+
     import ArrowDown from "../icons/ArrowDown.svelte";
     import ArrowUp from "../icons/ArrowUp.svelte";
-
-    import {fade} from 'svelte/transition';
     import Done from "../icons/Done.svelte";
 
     let isShow = false;
 
     export let item = null;
+    export let id = null;
+
+    const dispatchModule = (() => {
+
+        const dispatch = createEventDispatcher();
+
+        return {
+            done() {
+                dispatch('done', id);
+            },
+
+            update() {
+                dispatch('update', {item : item, id : id});
+            },
+
+            delete() {
+                dispatch('delete', id);
+            },
+        }
+
+    })();
+
 
 </script>
 
-<div class="max-w-sm rounded overflow-hidden shadow-lg bg-white">
+<div class="w-full rounded overflow-hidden shadow-lg bg-white">
 
     <div class="px-6 py-4">
         <div class="flex flex-row flex-no-wrap items-center justify-between">
@@ -37,23 +61,23 @@
     </div>
     <div class="px-6 py-4">
         {#if !item.done}
-            <button class="bg-indigo-500 hover:bg-indigo-700 text-white text-sm font-bold p-1 rounded">
+            <button class="bg-indigo-500 hover:bg-indigo-700 text-white text-sm font-bold p-1 rounded" on:click={dispatchModule.done}>
                 완료
             </button>
-            <button class="bg-blue-500 hover:bg-blue-700 text-white text-sm font-bold p-1 rounded">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white text-sm font-bold p-1 rounded" on:click={dispatchModule.update}>
                 수정
             </button>
-            <button class="bg-red-500 hover:bg-red-700 text-white text-sm font-bold p-1 rounded">
+            <button class="bg-red-500 hover:bg-red-700 text-white text-sm font-bold p-1 rounded" on:click={dispatchModule.delete}>
                 삭제
             </button>
         {/if}
         {#if item.done}
-        <div class="flex items-center justify-between">
-            <Done/>
-            <button class="bg-red-500 hover:bg-red-700 text-white text-sm font-bold p-1 rounded">
-                삭제
-            </button>
-        </div>
+            <div class="flex items-center justify-between">
+                <Done/>
+                <button class="bg-red-500 hover:bg-red-700 text-white text-sm font-bold p-1 rounded" on:click={dispatchModule.delete}>
+                    삭제
+                </button>
+            </div>
         {/if}
     </div>
 </div>

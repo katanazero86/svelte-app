@@ -17,6 +17,13 @@
     let total = 0;
     let doneCount = 0;
     let overDueDateCount = 0;
+    let updateItem = {
+        id: null,
+        title: '',
+        description: '',
+        dueDate: '',
+        done: false,
+    };
 
     FIREBASE_DB.collection("list")
             .orderBy("createdDate", "desc")
@@ -33,59 +40,124 @@
 
     const saveTodo = (e) => {
         const todoItemObject = {...e.detail};
-        createListItem(todoItemObject);
+        firebaseAppModule.createItem(todoItemObject);
     };
 
-    let addName = '';
-    let addAge = null;
+    const doneTodo = (e) => {
+        const targetItemId = e.detail;
+        firebaseAppModule.updateDoneItem(targetItemId);
+    };
 
-    // create
-    const createListItem = (todoItemObject) => {
+    const updateTodo = (e) => {
+        updateItem = {
+            id: e.detail.id,
+            title: e.detail.item.title,
+            description: e.detail.item.description,
+            dueDate: e.detail.item.dueDate,
+            done: e.detail.item.done,
+        };
 
-        if (!todoItemObject.title.trim()) {
-            alert('제목을 입력해주세요..');
-            return false;
-        }
+        isShow = true;
 
-        if (!todoItemObject.description.trim()) {
-            alert('내용을 입력해주세요..');
-            return false;
-        }
+    };
 
-        if (!todoItemObject.dueDate.trim()) {
-            alert('기한을 선택해주세요..');
-            return false;
-        }
+    const deleteTodo = (e) => {
+        const targetItemId = e.detail;
+        firebaseAppModule.deleteItem(targetItemId);
+    };
 
-        FIREBASE_DB.collection('list')
-                .add({
-                    title: todoItemObject.title.trim(),
-                    description: todoItemObject.description.trim(),
-                    dueDate: todoItemObject.dueDate.trim(),
-                    done: false,
-                    createdDate: moment(new Date()).tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss')
-                });
-
+    const cancelTodo = () => {
         isShow = false;
-
+        updateItem = {
+            id: null,
+            title: '',
+            description: '',
+            dueDate: '',
+            done: false,
+        };
     };
 
-    // delete
-    const deleteListItem = (itemId) => {
-        FIREBASE_DB.collection('list')
-                .doc(itemId)
-                .delete();
-    };
+    const firebaseAppModule = (() => {
 
-    // update
-    const updateListItem = (itemId) => {
-        FIREBASE_DB.collection('list')
-                .doc(itemId)
-                .update({
-                    name: '수정',
-                    age: 50
-                })
-    };
+        return {
+            // create
+            createItem(todoItemObject) {
+                if (!todoItemObject.title.trim()) {
+                    alert('제목을 입력해주세요..');
+                    return false;
+                }
+
+                if (!todoItemObject.description.trim()) {
+                    alert('내용을 입력해주세요..');
+                    return false;
+                }
+
+                if (!todoItemObject.dueDate.trim()) {
+                    alert('기한을 선택해주세요..');
+                    return false;
+                }
+
+                FIREBASE_DB.collection('list')
+                        .add({
+                            title: todoItemObject.title.trim(),
+                            description: todoItemObject.description.trim(),
+                            dueDate: todoItemObject.dueDate.trim(),
+                            done: false,
+                            createdDate: moment(new Date()).tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss')
+                        });
+
+                isShow = false;
+                updateItem = {
+                    id: null,
+                    title: '',
+                    description: '',
+                    dueDate: '',
+                    done: false,
+                };
+            },
+
+            //update : done
+            updateDoneItem(targetItemId) {
+                FIREBASE_DB.collection('list')
+                        .doc(targetItemId)
+                        .update({
+                            done: true
+                        });
+            },
+
+            //update
+            updateItem(e) {
+                const targetItem = {...e.detail};
+                FIREBASE_DB.collection('list')
+                        .doc(targetItem.id)
+                        .update({
+                            title: targetItem.title,
+                            description: targetItem.description,
+                            dueDate: targetItem.dueDate,
+                            done: targetItem.done,
+                        });
+
+                isShow = false;
+                updateItem = {
+                    id: null,
+                    title: '',
+                    description: '',
+                    dueDate: '',
+                    done: false,
+                };
+            },
+
+            //delete
+            deleteItem(targetItemId) {
+                FIREBASE_DB.collection('list')
+                        .doc(targetItemId)
+                        .delete();
+            },
+
+        }
+
+    })();
+
 
     const checkValidation = (() => {
 
@@ -97,7 +169,7 @@
         };
 
         const numberValidation = (e) => {
-            console.log('zzz');
+
             if (e.keyCode != 8 && !(e.keyCode >= 48 && e.keyCode <= 57) && !(e.keyCode >= 96 && e.keyCode <= 105)) {
                 e.preventDefault();
             }
@@ -112,7 +184,7 @@
 
 </script>
 
-<main class="w-full bg-indigo-100">
+<main class="w-full h-full bg-indigo-100">
 
     <section class="p-3">
         <h1 class="text-5xl text-indigo-800">TODO List</h1>
@@ -136,58 +208,32 @@
         </div>
     </section>
 
-    <section class="p-3">
+    <section class="flex flex-wrap justify-between p-3">
         {#each list as listItem}
-            <CardComponent item={listItem.data()}/>
+            <div class="w-full sm:flex-1 p-2">
+                <CardComponent item={listItem.data()}
+                               id={listItem.id}
+                               on:done={doneTodo}
+                               on:delete={deleteTodo}
+                               on:update={updateTodo}
+                />
+            </div>
         {/each}
     </section>
 
 </main>
 
-<!--<div class="w-full max-w-xs p-1">-->
-<!--    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">-->
-<!--        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">-->
-<!--            name-->
-<!--        </label>-->
-<!--        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"-->
-<!--               type="text" placeholder="ryan" bind:value={addName} on:keyup={checkValidation.emojiValidation}>-->
-<!--    </div>-->
-<!--    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">-->
-<!--        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">-->
-<!--            age-->
-<!--        </label>-->
-<!--        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"-->
-<!--               type="text" placeholder="25" bind:value={addAge} on:keydown={checkValidation.numberValidation}>-->
-<!--    </div>-->
-
-<!--    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" on:click={createListItem}>-->
-<!--        추가-->
-<!--    </button>-->
-<!--</div>-->
-
-<div class="bg-gray-200">
-    {#each list as listItem}
-        <div>
-            <p>{listItem.data().name}</p>
-            <p>{listItem.data().age}</p>
-            <button class="bg-red-500 hover:bg-red-700 text-white text-sm font-bold p-1 rounded"
-                    on:click={updateListItem(listItem.id)}>
-                수정
-            </button>
-            <button class="bg-red-500 hover:bg-red-700 text-white text-sm font-bold p-1 rounded"
-                    on:click={deleteListItem(listItem.id)}>
-                삭제
-            </button>
-        </div>
-    {/each}
-</div>
-
-
 {#if isShow}
     <div transition:fade="{{delay: 0, duration: 250}}">
         <TodoFormModalComponent
                 on:save={saveTodo}
-                on:cancel={() => isShow = false}
+                on:update={firebaseAppModule.updateItem}
+                on:cancel={cancelTodo}
+                id={updateItem.id}
+                title={updateItem.title}
+                description={updateItem.description}
+                dueDate={updateItem.dueDate}
+                done={updateItem.done}
         />
     </div>
 {/if}
