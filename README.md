@@ -29,7 +29,7 @@
 
 ---
 
-> ### 프로젝트 배포(deploy) <br/>
+> ### project 배포(deploy) <br/>
 > - https://vercel.com/ - 버셀 클라우드 플랫폼을 이용하여 배포
 > - 버셀 가입 후, github 저장소 연동
 > - https://svelte-app-delta.now.sh/
