@@ -7,10 +7,14 @@
     import ArrowUp from "../icons/ArrowUp.svelte";
     import Done from "../icons/Done.svelte";
 
+    // -- component data
     let isShow = false;
+    // -- component data
 
+    // -- component props
     export let item = null;
     export let id = null;
+    // -- component props
 
     const dispatchModule = (() => {
 
