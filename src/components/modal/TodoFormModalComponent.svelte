@@ -95,20 +95,16 @@
     <div class="w-full flex flex-no-wrap">
         <form class="w-full">
             <div class="flex items-center border-b border-b-2 border-teal-500 py-2">
-                <input class="appearance-none bg-transparent border-none w-full text-gray-700 py-1 px-2 leading-tight focus:outline-none"
-                       type="text" placeholder="Title" bind:value={title}>
+                <input class="appearance-none shadow border rounded w-full text-gray-700 py-3 px-3 leading-tight focus:outline-none"
+                       type="text" placeholder="제목" bind:value={title}>
             </div>
             <div class="flex items-center py-2">
-                <textarea style="outline: none"
-                          class="outline-none w-full text-gray-700 resize-y rounded focus:outline-none focus:shadow-outline py-1 px-2"
-                          rows="4" placeholder="Description" bind:value={description}></textarea>
+                <textarea
+                          class="shadow border rounded w-full outline-none w-full text-gray-700 resize-y focus:outline-none focus:shadow-outline py-3 px-3"
+                          rows="7" placeholder="내용" bind:value={description}></textarea>
             </div>
-            <div class="flex items-center justify-start py-2">
-                <p class="mr-2">
-                    Due Date :
-                </p>
-                <Datepicker style="margin: 0"
-                            start={minDate}
+            <div class="py-2">
+                <Datepicker start={minDate}
                             bind:formattedSelected
                             format={format}
                             daysOfWeek={daysOfWeek}
@@ -120,14 +116,12 @@
                             />
             </div>
             <hr class="my-8 border-b-2 border-gray-200">
-            <div class="flex items-center py-2 justify-end">
-                <button style="outline: none"
-                        class="outline-none flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded"
+            <div class="flex items-center justify-end py-2">
+                <button class="outline-none bg-indigo-500 text-white font-semibold rounded-lg hover:bg-white hover:text-indigo-500 py-2 px-4 mr-2"
                         type="button" on:click={dispatchModule.clickSave}>
                     저장
                 </button>
-                <button style="outline: none"
-                        class="outline-none flex-shrink-0 border-transparent border-4 text-teal-500 hover:text-teal-800 text-sm py-1 px-2 rounded"
+                <button class="outline-none bg-red-500 text-white font-semibold rounded-lg hover:bg-white hover:text-red-500 py-2 px-4"
                         type="button" on:click={dispatchModule.clickCancel}>
                     취소
                 </button>

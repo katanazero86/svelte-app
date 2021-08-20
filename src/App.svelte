@@ -249,7 +249,8 @@
     </div>
 {/if}
 
-<style>
-
-
+<style global>
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
 </style>
