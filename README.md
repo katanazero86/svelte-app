@@ -5,7 +5,7 @@
 > ### todo app 소개 <br/>
 > Svelte, Moment.js, Firebase, Rollup, PostCSS, HTML5, CSS3, Tailwind CSS
 > - Owner & Maintainer
-> - github. [https://github.com/katanazero86/vue-weather-v2](https://github.com/katanazero86/vue-weather-v2)
+> - github. [https://github.com/katanazero86/svelte-app](https://github.com/katanazero86/svelte-app)
 > - [sveltejs/template](https://github.com/sveltejs/template) 을 이용하여 rollup 번들러를 사용하는 초기 프로젝트 생성, Svelte 를 이용하여 Todo 웹앱 제작 및 Vercel 배포
 > - Todo 를 추가하면, 제목과 내용을 작성하고 기한일 선택 후 저장 합니다. Todo 는 firebase 에 저장되며, 실시간으로 업데이트된 내용을 조회해와 목록을 출력합니다.
 
