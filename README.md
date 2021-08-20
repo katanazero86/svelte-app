@@ -27,6 +27,13 @@
 > build : npm run build
 > ```
 
+- 2021.08.20 Updated
+```
+- 파이어베이스 관련 에러 수정(보안 규칙 수정)
+- package-lock.json 누락으로, 패키지 설치 후 프로젝트가 정상적으로 동작하지 않음 => 설정 수정 및 pacakage.json 내에 의존성 수정 및 삭제
+
+```
+
 ---
 
 > ### project 배포(deploy) <br/>
