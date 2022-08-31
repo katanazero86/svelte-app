@@ -27,7 +27,7 @@
   "dependencies": {
     "firebase": "^8.10.0",
     "moment": "^2.29.1",
-    "moment-timezone": "^0.5.33",
+    "moment-timezone": "^0.5.35",
     "sirv-cli": "^0.4.4"
   }
 }
